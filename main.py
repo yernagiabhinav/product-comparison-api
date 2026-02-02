@@ -54,7 +54,7 @@ async def lifespan(app: FastAPI):
     # Get environment variables
     serper_key = os.getenv('SERPER_API_KEY')
     project_id = os.getenv('GOOGLE_CLOUD_PROJECT_ID')
-    credentials_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+    credentials_path = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')  # Optional on Cloud Run
     
     if not serper_key:
         logger.error("❌ SERPER_API_KEY not found")
@@ -63,6 +63,13 @@ async def lifespan(app: FastAPI):
     if not project_id:
         logger.error("❌ GOOGLE_CLOUD_PROJECT_ID not found")
         raise ValueError("GOOGLE_CLOUD_PROJECT_ID not found in environment")
+    
+    # Note: GOOGLE_APPLICATION_CREDENTIALS is optional on Cloud Run
+    # Cloud Run automatically provides default credentials
+    if credentials_path:
+        logger.info(f"📁 Using credentials from: {credentials_path}")
+    else:
+        logger.info("☁️ Using default Cloud Run credentials (no explicit credentials file)")
     
     # Initialize services
     search_service = SearchService(serper_key)
@@ -433,6 +440,6 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=port,
-        reload=True,
+        reload=False,  # Set to False for production
         log_level="info"
     )
