@@ -14,6 +14,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -146,16 +147,8 @@ async def health_check():
 
 @app.get("/")
 async def root():
-    """Root endpoint."""
-    return {
-        "message": "Product Comparison API",
-        "version": "1.1.0",
-        "docs": "/docs",
-        "endpoints": {
-            "compare": "POST /api/compare",
-            "health": "GET /health"
-        }
-    }
+    """Serve the frontend HTML page."""
+    return FileResponse("index.html")
 
 
 @app.post("/api/compare")
