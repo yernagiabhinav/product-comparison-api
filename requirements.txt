@@ -17,11 +17,10 @@ cloudscraper==1.2.71
 
 # HTML parsing
 beautifulsoup4==4.12.3
-lxml==5.1.0
+lxml>=5.1.0
 
-# Google Cloud / Vertex AI (vertexai is included in google-cloud-aiplatform)
+# Google Cloud / Vertex AI
 google-cloud-aiplatform>=1.43.0
 
-# CORS support (included in fastapi)
 # Logging
 colorlog==6.8.0
